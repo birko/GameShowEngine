@@ -1,0 +1,19 @@
+﻿{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outFile": "GameShowEngine.js",
+    "declaration": true,
+    "watch": true
+  },
+  "include": [
+    "*.ts"
+  ] /*,
+
+  "files": [
+  ]*/
+}
