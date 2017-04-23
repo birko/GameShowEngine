@@ -12,6 +12,9 @@
   },
   "include": [
     "*.ts"
+  ],
+  "exclude": [
+    "*.d.ts"
   ] /*,
 
   "files": [
