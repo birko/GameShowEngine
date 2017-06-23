@@ -199,6 +199,7 @@ module GameShow {
         public deserialize(object: any) {
             this.setName(object["name"]);
             this.setPoints(object["points"]);
+            this.clearMembers();
             if (object["members"] !== undefined) {
                 object["members"].forEach(function (value: {}, index: number) {
                     var member: TeamMember = new TeamMember();

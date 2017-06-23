@@ -1,3 +1,9 @@
+"use strict";
+var GameShow;
+(function (GameShow) {
+    "use strict";
+})(GameShow || (GameShow = {}));
+"use strict";
 var GameShow;
 (function (GameShow) {
     "use strict";
@@ -167,6 +173,7 @@ var GameShow;
         Team.prototype.deserialize = function (object) {
             this.setName(object["name"]);
             this.setPoints(object["points"]);
+            this.clearMembers();
             if (object["members"] !== undefined) {
                 object["members"].forEach(function (value, index) {
                     var member = new TeamMember();
@@ -180,6 +187,7 @@ var GameShow;
     }());
     GameShow.Team = Team;
 })(GameShow || (GameShow = {}));
+"use strict";
 var GameShow;
 (function (GameShow) {
     "use strict";
@@ -480,6 +488,9 @@ var GameShow;
         Contest.prototype.getTeamByIndex = function (index) {
             return (index >= 0 && this.getTeams().length > index) ? this.getTeams()[index] : null;
         };
+        Contest.prototype.clearTeams = function () {
+            return this.setTeams([]);
+        };
         Contest.prototype.setTeams = function (teams) {
             this.teams = undefined;
             return this.addTeams(teams);
@@ -551,6 +562,7 @@ var GameShow;
             };
         };
         Contest.prototype.deserialize = function (object) {
+            this.clearTeams();
             if (object["teams"] !== undefined) {
                 object["teams"].forEach(function (value, index) {
                     var team = new ContestTeam();
@@ -572,6 +584,7 @@ var GameShow;
     }());
     GameShow.Contest = Contest;
 })(GameShow || (GameShow = {}));
+"use strict";
 var GameShow;
 (function (GameShow) {
     "use strict";
@@ -620,8 +633,7 @@ var GameShow;
         };
         Games.prototype.setContests = function (contests) {
             this.contests = undefined;
-            this.addContests(contests);
-            return this;
+            return this.addContests(contests);
         };
         Games.prototype.addContests = function (contests) {
             if (contests !== undefined && contests.length > 0) {
@@ -652,6 +664,9 @@ var GameShow;
                 }
             });
             return this;
+        };
+        Games.prototype.clearContests = function () {
+            return this.setContests([]);
         };
         Games.prototype.removeContestByIndex = function (index) {
             if (index >= 0 && this.getContests().length > index) {
@@ -741,8 +756,7 @@ var GameShow;
         ;
         Games.prototype.setTeams = function (teams) {
             this.teams = undefined;
-            this.addTeams(teams);
-            return this;
+            return this.addTeams(teams);
         };
         Games.prototype.addTeams = function (teams) {
             if (teams !== undefined && teams.length > 0) {
@@ -770,8 +784,7 @@ var GameShow;
             return this.removeTeamByIndex(index);
         };
         Games.prototype.clearTeams = function () {
-            this.setTeams([]);
-            return this;
+            return this.setTeams([]);
         };
         Games.prototype.getTeamByIndex = function (index) {
             if (index >= 0 && index < this.getTeams().length) {
@@ -815,6 +828,7 @@ var GameShow;
             };
         };
         Games.prototype.deserialize = function (object) {
+            this.clearTeams();
             if (object["teams"] !== undefined) {
                 object["teams"].forEach(function (value, index) {
                     var team = new GameShow.Team();
@@ -822,6 +836,7 @@ var GameShow;
                     this.addTeam(team);
                 }.bind(this));
             }
+            this.clearContests();
             if (object["contests"] !== undefined) {
                 object["contests"].forEach(function (value, index) {
                     var contest = new GameShow.Contest();
@@ -846,6 +861,7 @@ var GameShow;
     }());
     GameShow.Games = Games;
 })(GameShow || (GameShow = {}));
+"use strict";
 var GameShowApp;
 (function (GameShowApp) {
     "use strict";

@@ -3,6 +3,8 @@ declare module GameShow {
         serialize(): any;
         deserialize(object: any): void;
     }
+}
+declare module GameShow {
     class TeamMember implements ISerializeToObject {
         private nick;
         private id;
@@ -144,6 +146,7 @@ declare module GameShow {
         getTeamsResults(): ContestTeam[];
         getTeamByName(name: string): ContestTeam;
         getTeamByIndex(index: number): ContestTeam;
+        clearTeams(): Contest;
         setTeams(teams: ContestTeam[]): Contest;
         addTeams(teams: ContestTeam[]): Contest;
         addTeam(team: ContestTeam): Contest;
@@ -190,6 +193,7 @@ declare module GameShow {
         addContests(contests: Contest[]): Games;
         addContest(contest: Contest): Games;
         clearActiveContests(onlyWinners?: boolean): Games;
+        clearContests(): Games;
         removeContestByIndex(index: number): Games;
         removeContest(contest: Contest): Games;
         getContestByIndex(index: number): Contest;

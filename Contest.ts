@@ -365,6 +365,10 @@ module GameShow {
             return (index >= 0 && this.getTeams().length > index) ? this.getTeams()[index] : null;
         }
 
+        public clearTeams(): Contest {
+            return this.setTeams([]);
+        }
+
         public setTeams(teams: ContestTeam[]): Contest {
             this.teams = undefined;
             return this.addTeams(teams);
@@ -443,6 +447,7 @@ module GameShow {
         }
 
         public deserialize(object: any) {
+            this.clearTeams();
             if (object["teams"] !== undefined) {
                 object["teams"].forEach(function (value: {}, index: number) {
                     var team: ContestTeam = new ContestTeam();

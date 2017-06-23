@@ -57,8 +57,7 @@ module GameShow {
 
         public setContests(contests: Contest[]): Games {
             this.contests = undefined;
-            this.addContests(contests);
-            return this;
+            return this.addContests(contests);
         }
 
         public addContests(contests: Contest[]): Games {
@@ -91,6 +90,10 @@ module GameShow {
                 }
             });
             return this;
+        }
+
+        public clearContests(): Games {
+            return this.setContests([]);
         }
 
         public removeContestByIndex(index: number): Games {
@@ -189,8 +192,7 @@ module GameShow {
 
         public setTeams(teams: Team[]): Games {
             this.teams = undefined;
-            this.addTeams(teams);
-            return this;
+            return this.addTeams(teams);
         }
 
         public addTeams(teams: Team[]): Games {
@@ -223,8 +225,7 @@ module GameShow {
         }
 
         public clearTeams(): Games {
-            this.setTeams([]);
-            return this;
+            return this.setTeams([]);
         }
 
         public getTeamByIndex(index: number): Team {
@@ -273,6 +274,7 @@ module GameShow {
         }
 
         public deserialize(object: any) {
+            this.clearTeams();
             if (object["teams"] !== undefined) {
                 object["teams"].forEach(function (value: {}, index: number) {
                     var team: Team = new Team();
@@ -281,6 +283,7 @@ module GameShow {
                 }.bind(this));
             }
 
+            this.clearContests();
             if (object["contests"] !== undefined) {
                 object["contests"].forEach(function (value: {}, index: number) {
                     var contest: Contest = new Contest();
