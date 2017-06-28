@@ -145,14 +145,15 @@ module GameShow {
         }
 
         public startContest(contest: Contest): Games {
-            console.log("startcontest");
             this.clearActiveContests(this.getAllowMultiple());
             if (contest !== null && contest !== undefined) {
                 contest.setStatus(ContestStatus.Running);
                 var date: number = Date.now();
                 contest.setStartTime(date);
                 contest.clearPauseTime();
-                contest.setRun(0);
+                if (!contest.isTeam()) {
+                    contest.setRun(0);
+                }
             }
             return this;
         }
@@ -172,8 +173,8 @@ module GameShow {
                         }
                     });
                 }
+                contest.clearWinner();
             }
-            contest.clearWinner();
             return this;
         }
 
@@ -186,7 +187,7 @@ module GameShow {
 
         public getTeamsResults(): Team[] {
             return this.getTeams().sort((a: Team, b : Team) => {
-                return b.getPoints() - a.getPoints();
+                return b.getPoints() - a.getPoints(); // more is better
             });
         };
 

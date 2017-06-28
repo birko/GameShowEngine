@@ -711,14 +711,15 @@ var GameShow;
             });
         };
         Games.prototype.startContest = function (contest) {
-            console.log("startcontest");
             this.clearActiveContests(this.getAllowMultiple());
             if (contest !== null && contest !== undefined) {
                 contest.setStatus(GameShow.ContestStatus.Running);
                 var date = Date.now();
                 contest.setStartTime(date);
                 contest.clearPauseTime();
-                contest.setRun(0);
+                if (!contest.isTeam()) {
+                    contest.setRun(0);
+                }
             }
             return this;
         };
@@ -738,8 +739,8 @@ var GameShow;
                         }
                     });
                 }
+                contest.clearWinner();
             }
-            contest.clearWinner();
             return this;
         };
         Games.prototype.getTeams = function () {
