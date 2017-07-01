@@ -7,16 +7,20 @@ declare module GameShow {
 declare module GameShow {
     class TeamMember implements ISerializeToObject {
         private nick;
+        private image;
         private id;
-        constructor(nick?: string, id?: string);
+        constructor(nick?: string, id?: string, image?: string);
         getNick(): string;
         setNick(nick: string): TeamMember;
         getId(): string;
         setId(id: string): TeamMember;
+        getImage(): string;
+        setImage(image: string): TeamMember;
         toString(): string;
         serialize(): {
             nick: string;
             id: string;
+            image: string;
         };
         deserialize(object: any): void;
     }

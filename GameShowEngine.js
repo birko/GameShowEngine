@@ -8,14 +8,18 @@ var GameShow;
 (function (GameShow) {
     "use strict";
     var TeamMember = (function () {
-        function TeamMember(nick, id) {
+        function TeamMember(nick, id, image) {
             if (nick === void 0) { nick = undefined; }
             if (id === void 0) { id = undefined; }
-            if (nick != undefined || nick != "") {
+            if (image === void 0) { image = undefined; }
+            if (nick !== undefined && nick !== "" && nick !== null) {
                 this.setNick(nick);
             }
-            if (id != undefined || id != "") {
+            if (id !== undefined && id !== "" && id !== null) {
                 this.setId(id);
+            }
+            if (image !== undefined && image !== "" && image != null) {
+                this.setImage(image);
             }
         }
         TeamMember.prototype.getNick = function () {
@@ -32,18 +36,27 @@ var GameShow;
             this.id = id;
             return this;
         };
+        TeamMember.prototype.getImage = function () {
+            return this.image;
+        };
+        TeamMember.prototype.setImage = function (image) {
+            this.image = image;
+            return this;
+        };
         TeamMember.prototype.toString = function () {
             return "[" + this.getId() + "] " + this.getNick();
         };
         TeamMember.prototype.serialize = function () {
             return {
                 nick: this.getNick(),
-                id: this.getId()
+                id: this.getId(),
+                image: this.getImage()
             };
         };
         TeamMember.prototype.deserialize = function (object) {
             this.setNick(object["nick"])
-                .setId(object['id']);
+                .setId(object["id"])
+                .setImage(object["image"]);
         };
         return TeamMember;
     }());

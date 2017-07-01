@@ -4,14 +4,18 @@ module GameShow {
 
     export class TeamMember implements ISerializeToObject {
         private nick: string;
+        private image: string;
         private id: string;
 
-        public constructor(nick: string = undefined, id: string = undefined) {
-            if (nick != undefined || nick != "") {
+        public constructor(nick: string = undefined, id: string = undefined, image: string = undefined) {
+            if (nick !== undefined && nick !== "" && nick !== null) {
                 this.setNick(nick);
             }
-            if (id != undefined || id != "") {
+            if (id !== undefined && id !== "" && id !== null) {
                 this.setId(id);
+            }
+            if (image !== undefined && image !== "" && image != null) {
+                this.setImage(image);
             }
         }
 
@@ -33,6 +37,15 @@ module GameShow {
             return this;
         }
 
+        public getImage(): string {
+            return this.image;
+        }
+
+        public setImage(image: string): TeamMember {
+            this.image = image;
+            return this;
+        }
+
         public toString(): string {
             return "[" + this.getId() + "] " + this.getNick();
         }
@@ -40,13 +53,15 @@ module GameShow {
         public serialize() {
             return {
                 nick: this.getNick(),
-                id: this.getId()
+                id: this.getId(),
+                image: this.getImage()
             }
         }
 
         public deserialize(object: any) {
             this.setNick(object["nick"])
-                .setId(object['id']);
+                .setId(object["id"])
+                .setImage(object["image"]);
         }
     }
 
