@@ -1,4 +1,4 @@
-﻿/// <reference path="Common.ts" />
+﻿/// <reference path="../DataStructures/datastructures.d.ts" />
 /// <reference path="Team.ts" />
 /// <reference path="Contest.ts" />
 /// <reference path="Engine.ts" />

@@ -1,4 +1,4 @@
-﻿/// <reference path="Common.ts" />
+﻿/// <reference path="../DataStructures/datastructures.d.ts" />
 /// <reference path="Team.ts" />
 module GameShow {
     "use strict";
@@ -22,7 +22,7 @@ module GameShow {
         TeamTrackWatch,
     }
 
-    export class ContestTeam implements ISerializeToObject {
+    export class ContestTeam implements DataStructures.ISerializeToObject {
         private name: string;
         private result: number;
         private winner: boolean;
@@ -75,7 +75,7 @@ module GameShow {
         }
     }
 
-    export class Contest implements ISerializeToObject {
+    export class Contest implements DataStructures.ISerializeToObject {
         private name: string;
         private nameAlt: string;
         private seconds: number;
@@ -142,7 +142,6 @@ module GameShow {
         }
 
         public clearStartTime(): Contest {
-            console.log("clearstarttime");
             this.startTime = undefined;
             return this;
         }

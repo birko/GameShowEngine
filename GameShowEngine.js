@@ -1,25 +1,249 @@
 "use strict";
-var GameShow;
-(function (GameShow) {
+var DataStructures;
+(function (DataStructures) {
     "use strict";
-})(GameShow || (GameShow = {}));
-"use strict";
+    var List = (function () {
+        function List() {
+            this.values = [];
+        }
+        List.prototype.getValues = function () {
+            if (this.values === undefined || this.values === null) {
+                this.clear();
+            }
+            return this.values;
+        };
+        List.prototype.setValues = function (values) {
+            this.values = values;
+            return this;
+        };
+        List.prototype.clear = function () {
+            return this.setValues([]);
+        };
+        List.prototype.getLength = function () {
+            return this.getValues().length;
+        };
+        List.prototype.hasValues = function () {
+            return this.getLength() > 0;
+        };
+        List.prototype.indexOf = function (value) {
+            return this.getValues().indexOf(value);
+        };
+        List.prototype.add = function (index, value) {
+            if (index <= 0) {
+                return this.addFirst(value);
+            }
+            else if (index > this.getLength()) {
+                return this.addLast(value);
+            }
+            else {
+                this.values.splice(index, 0, value);
+                return this;
+            }
+        };
+        List.prototype.addLast = function (value) {
+            return this.push(value);
+        };
+        List.prototype.addFirst = function (value) {
+            return this.unshift(value);
+        };
+        List.prototype.unshift = function (value) {
+            this.getValues();
+            this.values.unshift(value);
+            return this;
+        };
+        List.prototype.push = function (value) {
+            this.getValues();
+            this.values.push(value);
+            return this;
+        };
+        List.prototype.addRange = function (values) {
+            var _this = this;
+            if (values !== null && values !== undefined) {
+                values.forEach(function (value) {
+                    _this.addLast(value);
+                });
+            }
+            return this;
+        };
+        List.prototype.get = function (index) {
+            if (index >= 0 && index < this.getLength()) {
+                return this.values[index];
+            }
+            return null;
+        };
+        List.prototype.set = function (index, value) {
+            if (index >= 0 && index < this.getLength()) {
+                this.values[index] = value;
+            }
+            return this;
+        };
+        List.prototype.remove = function (index) {
+            if (this.hasValues() && index >= 0 && index < this.getLength()) {
+                this.values.splice(index, 1);
+            }
+            return this;
+        };
+        List.prototype.removeFirst = function () {
+            return this.shift();
+        };
+        List.prototype.removeLast = function () {
+            return this.pop();
+        };
+        List.prototype.shift = function () {
+            if (this.hasValues()) {
+                this.values.shift();
+            }
+            return this;
+        };
+        List.prototype.pop = function () {
+            if (this.hasValues()) {
+                this.values.pop();
+            }
+            return this;
+        };
+        return List;
+    }());
+    DataStructures.List = List;
+})(DataStructures || (DataStructures = {}));
+var DataStructures;
+(function (DataStructures) {
+    "use strict";
+    var KeyValuePair = (function () {
+        function KeyValuePair(key, value) {
+            this.key = null;
+            this.value = null;
+            this
+                .setKey(key)
+                .setValue(value);
+        }
+        KeyValuePair.prototype.getKey = function () {
+            return this.key;
+        };
+        KeyValuePair.prototype.setKey = function (key) {
+            this.key = key;
+            return this;
+        };
+        KeyValuePair.prototype.getValue = function () {
+            return this.value;
+        };
+        KeyValuePair.prototype.setValue = function (value) {
+            this.value = value;
+            return this;
+        };
+        return KeyValuePair;
+    }());
+    DataStructures.KeyValuePair = KeyValuePair;
+    var Dictionary = (function () {
+        function Dictionary() {
+            this.values = new DataStructures.List();
+            this.keys = new DataStructures.List();
+        }
+        Dictionary.prototype.getKeysList = function () {
+            if (this.keys === undefined || this.keys === null) {
+                this.clear();
+            }
+            return this.keys;
+        };
+        Dictionary.prototype.getKeys = function () {
+            return this.getKeysList().getValues();
+        };
+        Dictionary.prototype.getValuesList = function () {
+            if (this.values === undefined || this.values === null) {
+                this.clear();
+            }
+            return this.values;
+        };
+        Dictionary.prototype.getValues = function () {
+            return this.getValuesList().getValues();
+        };
+        Dictionary.prototype.getItems = function () {
+            var _this = this;
+            return this.getKeys().map(function (value, index) {
+                return new KeyValuePair(value, _this.get(value));
+            });
+        };
+        Dictionary.prototype.clear = function () {
+            this.values = new DataStructures.List();
+            this.keys = new DataStructures.List();
+            return this;
+        };
+        Dictionary.prototype.getLength = function () {
+            return this.getKeysList().getLength();
+        };
+        Dictionary.prototype.containsKey = function (key) {
+            return this.getKeys().indexOf(key) >= 0;
+        };
+        Dictionary.prototype.setItems = function (items) {
+            if (items !== undefined && items !== null && items.length > 0) {
+                var length = items.length;
+                for (var i = 0; i < length; i++) {
+                    var item = items[i];
+                    if (item != null) {
+                        return this.set(item.getKey(), item.getValue());
+                    }
+                }
+            }
+            return this;
+        };
+        Dictionary.prototype.setItem = function (item) {
+            if (item != null) {
+                return this.set(item.getKey(), item.getValue());
+            }
+            return this;
+        };
+        Dictionary.prototype.set = function (key, value) {
+            if (!this.containsKey(key)) {
+                this.getKeysList().addLast(key);
+                this.getValuesList().addLast(value);
+            }
+            else {
+                var index = this.getKeysList().indexOf(key);
+                this.getValuesList().set(index, value);
+            }
+            return this;
+        };
+        Dictionary.prototype.get = function (key) {
+            if (this.containsKey(key)) {
+                var index = this.getKeysList().indexOf(key);
+                return this.getValuesList().get(index);
+            }
+            return null;
+        };
+        Dictionary.prototype.remove = function (key) {
+            if (this.containsKey(key)) {
+                var index = this.getKeysList().indexOf(key);
+                var value = this.getValuesList().get(index);
+                this.getKeysList().remove(index);
+                this.getValuesList().remove(index);
+                return value;
+            }
+            return null;
+        };
+        return Dictionary;
+    }());
+    DataStructures.Dictionary = Dictionary;
+})(DataStructures || (DataStructures = {}));
+var DataStructures;
+(function (DataStructures) {
+    "use strict";
+})(DataStructures || (DataStructures = {}));
 var GameShow;
 (function (GameShow) {
     "use strict";
     var TeamMember = (function () {
-        function TeamMember(nick, id, image) {
+        function TeamMember(nick, id, images) {
             if (nick === void 0) { nick = undefined; }
             if (id === void 0) { id = undefined; }
-            if (image === void 0) { image = undefined; }
+            if (images === void 0) { images = undefined; }
+            this.images = new DataStructures.List();
             if (nick !== undefined && nick !== "" && nick !== null) {
                 this.setNick(nick);
             }
             if (id !== undefined && id !== "" && id !== null) {
                 this.setId(id);
             }
-            if (image !== undefined && image !== "" && image != null) {
-                this.setImage(image);
+            if (images !== undefined && images != null) {
+                this.setImages(images);
             }
         }
         TeamMember.prototype.getNick = function () {
@@ -36,27 +260,50 @@ var GameShow;
             this.id = id;
             return this;
         };
-        TeamMember.prototype.getImage = function () {
-            return this.image;
-        };
-        TeamMember.prototype.setImage = function (image) {
-            this.image = image;
+        TeamMember.prototype.setImages = function (images) {
+            this.images = new DataStructures.List();
+            this.images.addRange(images);
             return this;
+        };
+        TeamMember.prototype.getImages = function () {
+            return this.images.getValues();
+        };
+        TeamMember.prototype.addImage = function (image) {
+            this.images.addLast(image);
+            return this;
+        };
+        TeamMember.prototype.removeImage = function (index) {
+            this.images.remove(index);
+            return this;
+        };
+        TeamMember.prototype.hasImages = function () {
+            return this.images.hasValues();
+        };
+        TeamMember.prototype.getImagesLength = function () {
+            return this.images.getLength();
         };
         TeamMember.prototype.toString = function () {
             return "[" + this.getId() + "] " + this.getNick();
         };
         TeamMember.prototype.serialize = function () {
+            var imagesList = [];
+            this.getImages().forEach(function (value, index) {
+                imagesList.push(value);
+            });
             return {
                 nick: this.getNick(),
                 id: this.getId(),
-                image: this.getImage()
+                images: imagesList
             };
         };
         TeamMember.prototype.deserialize = function (object) {
             this.setNick(object["nick"])
-                .setId(object["id"])
-                .setImage(object["image"]);
+                .setId(object["id"]);
+            if (object["images"] !== undefined) {
+                object["images"].forEach(function (value, index) {
+                    this.addImage(value);
+                }.bind(this));
+            }
         };
         return TeamMember;
     }());
@@ -200,7 +447,6 @@ var GameShow;
     }());
     GameShow.Team = Team;
 })(GameShow || (GameShow = {}));
-"use strict";
 var GameShow;
 (function (GameShow) {
     "use strict";
@@ -318,7 +564,6 @@ var GameShow;
             return this;
         };
         Contest.prototype.clearStartTime = function () {
-            console.log("clearstarttime");
             this.startTime = undefined;
             return this;
         };
@@ -597,7 +842,6 @@ var GameShow;
     }());
     GameShow.Contest = Contest;
 })(GameShow || (GameShow = {}));
-"use strict";
 var GameShow;
 (function (GameShow) {
     "use strict";
@@ -875,7 +1119,6 @@ var GameShow;
     }());
     GameShow.Games = Games;
 })(GameShow || (GameShow = {}));
-"use strict";
 var GameShowApp;
 (function (GameShowApp) {
     "use strict";

@@ -1,21 +1,21 @@
-﻿/// <reference path="Common.ts" />
+﻿/// <reference path="../DataStructures/Types.ts" />
 module GameShow {
     "use strict";
 
-    export class TeamMember implements ISerializeToObject {
+    export class TeamMember implements DataStructures.ISerializeToObject {
         private nick: string;
-        private image: string;
+        private images: DataStructures.List<string> = new DataStructures.List<string>();
         private id: string;
 
-        public constructor(nick: string = undefined, id: string = undefined, image: string = undefined) {
+        public constructor(nick: string = undefined, id: string = undefined, images: string[] = undefined) {
             if (nick !== undefined && nick !== "" && nick !== null) {
                 this.setNick(nick);
             }
             if (id !== undefined && id !== "" && id !== null) {
                 this.setId(id);
             }
-            if (image !== undefined && image !== "" && image != null) {
-                this.setImage(image);
+            if (images !== undefined && images != null) {
+                this.setImages(images);
             }
         }
 
@@ -37,13 +37,32 @@ module GameShow {
             return this;
         }
 
-        public getImage(): string {
-            return this.image;
+        public setImages(images: string[]): TeamMember {
+            this.images = new DataStructures.List<string>();
+            this.images.addRange(images);
+            return this;
         }
 
-        public setImage(image: string): TeamMember {
-            this.image = image;
+        public getImages(): string[] {
+            return this.images.getValues();
+        }
+
+        public addImage(image: string): TeamMember {
+            this.images.addLast(image);
             return this;
+        }
+
+        public removeImage(index: number): TeamMember {
+            this.images.remove(index);
+            return this;
+        }
+
+        public hasImages(): boolean {
+            return this.images.hasValues();
+        }
+
+        public getImagesLength(): number {
+            return this.images.getLength();
         }
 
         public toString(): string {
@@ -51,21 +70,30 @@ module GameShow {
         }
 
         public serialize() {
+            var imagesList: any[] = [];
+            this.getImages().forEach((value: string, index: number) => {
+                imagesList.push(value);
+            });
             return {
                 nick: this.getNick(),
                 id: this.getId(),
-                image: this.getImage()
+                images: imagesList
             }
         }
 
         public deserialize(object: any) {
             this.setNick(object["nick"])
                 .setId(object["id"])
-                .setImage(object["image"]);
+                ;
+            if (object["images"] !== undefined) {
+                object["images"].forEach(function (value: string, index: number) {
+                    this.addImage(value);
+                }.bind(this));
+            }
         }
     }
 
-    export class Team implements ISerializeToObject {
+    export class Team implements DataStructures.ISerializeToObject {
         private points: number;
         private contestsFinished: number;
         private name: string;

@@ -1,30 +1,93 @@
-declare module GameShow {
+/// <reference path="../DataStructures/datastructures.d.ts" />
+declare module DataStructures {
+    class List<TValue> {
+        private values;
+        getValues(): TValue[];
+        setValues(values: TValue[]): List<TValue>;
+        clear(): List<TValue>;
+        getLength(): number;
+        hasValues(): boolean;
+        indexOf(value: TValue): number;
+        add(index: number, value: TValue): List<TValue>;
+        addLast(value: TValue): List<TValue>;
+        addFirst(value: TValue): List<TValue>;
+        unshift(value: TValue): List<TValue>;
+        push(value: TValue): List<TValue>;
+        addRange(values: TValue[]): List<TValue>;
+        get(index: number): TValue;
+        set(index: number, value: TValue): List<TValue>;
+        remove(index: number): List<TValue>;
+        removeFirst(): List<TValue>;
+        removeLast(): List<TValue>;
+        shift(): List<TValue>;
+        pop(): List<TValue>;
+    }
+}
+declare module DataStructures {
+    class KeyValuePair<TKey, TValue> {
+        private key;
+        private value;
+        constructor(key: TKey, value: TValue);
+        getKey(): TKey;
+        setKey(key: TKey): KeyValuePair<TKey, TValue>;
+        getValue(): TValue;
+        setValue(value: TValue): KeyValuePair<TKey, TValue>;
+    }
+    class Dictionary<TKey, TValue> {
+        private values;
+        private keys;
+        getKeysList(): List<TKey>;
+        getKeys(): TKey[];
+        getValuesList(): List<TValue>;
+        getValues(): TValue[];
+        getItems(): KeyValuePair<TKey, TValue>[];
+        clear(): Dictionary<TKey, TValue>;
+        getLength(): number;
+        containsKey(key: TKey): boolean;
+        setItems(items: KeyValuePair<TKey, TValue>[]): Dictionary<TKey, TValue>;
+        setItem(item: KeyValuePair<TKey, TValue>): Dictionary<TKey, TValue>;
+        set(key: TKey, value: TValue): Dictionary<TKey, TValue>;
+        get(key: TKey): TValue;
+        remove(key: TKey): TValue;
+    }
+}
+declare module DataStructures {
     interface ISerializeToObject {
         serialize(): any;
         deserialize(object: any): void;
     }
+    interface IComparable {
+        compare(item: IComparable): number;
+    }
+    interface IAssocArray<TValue> {
+        [index: string]: TValue;
+    }
 }
 declare module GameShow {
-    class TeamMember implements ISerializeToObject {
+    class TeamMember implements DataStructures.ISerializeToObject {
         private nick;
-        private image;
+        private images;
         private id;
-        constructor(nick?: string, id?: string, image?: string);
+        constructor(nick?: string, id?: string, images?: string[]);
         getNick(): string;
         setNick(nick: string): TeamMember;
         getId(): string;
         setId(id: string): TeamMember;
-        getImage(): string;
-        setImage(image: string): TeamMember;
+        setImages(images: string[]): TeamMember;
+        getImages(): string[];
+        addImage(image: string): TeamMember;
+        removeImage(index: number): TeamMember;
+        hasImages(): boolean;
+        getImagesLength(): number;
         toString(): string;
         serialize(): {
             nick: string;
             id: string;
-            image: string;
+            images: any[];
         };
         deserialize(object: any): void;
     }
-    class Team implements ISerializeToObject {
+    class Team implements DataStructures.ISerializeToObject {
         private points;
         private contestsFinished;
         private name;
@@ -75,7 +138,7 @@ declare module GameShow {
         TrackWatch = 4,
         TeamTrackWatch = 5,
     }
-    class ContestTeam implements ISerializeToObject {
+    class ContestTeam implements DataStructures.ISerializeToObject {
         private name;
         private result;
         private winner;
@@ -93,7 +156,7 @@ declare module GameShow {
         };
         deserialize(object: any): void;
     }
-    class Contest implements ISerializeToObject {
+    class Contest implements DataStructures.ISerializeToObject {
         private name;
         private nameAlt;
         private seconds;
@@ -181,7 +244,7 @@ declare module GameShow {
         Winner = 3,
         End = 4,
     }
-    class Games implements ISerializeToObject {
+    class Games implements DataStructures.ISerializeToObject {
         private teams;
         private contests;
         private status;

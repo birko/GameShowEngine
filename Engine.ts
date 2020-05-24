@@ -1,4 +1,4 @@
-﻿/// <reference path="Common.ts" />
+﻿/// <reference path="../DataStructures/datastructures.d.ts" />
 /// <reference path="Contest.ts" />
 /// <reference path="Team.ts" />
 module GameShow {
@@ -12,7 +12,7 @@ module GameShow {
         End,
     }
 
-    export class Games implements ISerializeToObject {
+    export class Games implements DataStructures.ISerializeToObject {
         private teams: Team[];
         private contests: Contest[];
         private status: GamesStatus = GamesStatus.Begin;
